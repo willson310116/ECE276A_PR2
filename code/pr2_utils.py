@@ -104,7 +104,7 @@ def test_bresenham2D():
   num_rep = 1000
   start_time = time.time()
   for i in range(0,num_rep):
-	  x,y = bresenham2D(sx, sy, 500, 200)
+    x,y = bresenham2D(sx, sy, 500, 200)
   print("1000 raytraces: --- %s seconds ---" % (time.time() - start_time))
 
 def test_mapCorrelation():
@@ -149,49 +149,48 @@ def test_mapCorrelation():
   x_range = np.arange(-0.2,0.2+0.05,0.05)
   y_range = np.arange(-0.2,0.2+0.05,0.05)
 
-
   
-  # print("Testing map_correlation with {}x{} cells".format(MAP['sizex'],MAP['sizey']))
-  # ts = tic()
-  # c = mapCorrelation(MAP['map'],x_im,y_im,Y,x_range,y_range)
-  # toc(ts,"Map Correlation")
+  print("Testing map_correlation with {}x{} cells".format(MAP['sizex'],MAP['sizey']))
+  ts = tic()
+  c = mapCorrelation(MAP['map'],x_im,y_im,Y,x_range,y_range)
+  toc(ts,"Map Correlation")
 
-  # c_ex = np.array([[3,4,8,162,270,132,18,1,0],
-	# 	  [25  ,1   ,8   ,201  ,307 ,109 ,5  ,1   ,3],
-	# 	  [314 ,198 ,91  ,263  ,366 ,73  ,5  ,6   ,6],
-	# 	  [130 ,267 ,360 ,660  ,606 ,87  ,17 ,15  ,9],
-	# 	  [17  ,28  ,95  ,618  ,668 ,370 ,271,136 ,30],
-	# 	  [9   ,10  ,64  ,404  ,229 ,90  ,205,308 ,323],
-	# 	  [5   ,16  ,101 ,360  ,152 ,5   ,1  ,24  ,102],
-	# 	  [7   ,30  ,131 ,309  ,105 ,8   ,4  ,4   ,2],
-	# 	  [16  ,55  ,138 ,274  ,75  ,11  ,6  ,6   ,3]])
+  c_ex = np.array([[3,4,8,162,270,132,18,1,0],
+		  [25  ,1   ,8   ,201  ,307 ,109 ,5  ,1   ,3],
+		  [314 ,198 ,91  ,263  ,366 ,73  ,5  ,6   ,6],
+		  [130 ,267 ,360 ,660  ,606 ,87  ,17 ,15  ,9],
+		  [17  ,28  ,95  ,618  ,668 ,370 ,271,136 ,30],
+		  [9   ,10  ,64  ,404  ,229 ,90  ,205,308 ,323],
+		  [5   ,16  ,101 ,360  ,152 ,5   ,1  ,24  ,102],
+		  [7   ,30  ,131 ,309  ,105 ,8   ,4  ,4   ,2],
+		  [16  ,55  ,138 ,274  ,75  ,11  ,6  ,6   ,3]])
     
-  # if np.sum(c==c_ex) == np.size(c_ex):
-	#   print("...Test passed.")
-  # else:
-	#   print("...Test failed. Close figures to continue tests.")	
+  if np.sum(c==c_ex) == np.size(c_ex):
+    print("...Test passed.")
+  else:
+    print("...Test failed. Close figures to continue tests.")	
 
-  # #plot original lidar points
-  # fig1 = plt.figure()
-  # plt.plot(xs0,ys0,'.k')
-  # plt.xlabel("x")
-  # plt.ylabel("y")
-  # plt.title("Laser reading")
-  # plt.axis('equal')
+  #plot original lidar points
+  fig1 = plt.figure()
+  plt.plot(xs0,ys0,'.k')
+  plt.xlabel("x")
+  plt.ylabel("y")
+  plt.title("Laser reading")
+  plt.axis('equal')
   
   #plot map
   fig2 = plt.figure()
   plt.imshow(MAP['map'],cmap="hot");
   plt.title("Occupancy grid map")
   
-  # #plot correlation
-  # fig3 = plt.figure()
-  # # ax3 = fig3.gca(projection='3d')
-  # ax3 = fig3.add_subplot(projection='3d')
-  # X, Y = np.meshgrid(np.arange(0,9), np.arange(0,9))
-  # ax3.plot_surface(X,Y,c,linewidth=0,cmap=plt.cm.jet, antialiased=False,rstride=1, cstride=1)
-  # plt.title("Correlation coefficient map")  
-  # plt.show()
+  #plot correlation
+  fig3 = plt.figure()
+  # ax3 = fig3.gca(projection='3d')
+  ax3 = fig3.add_subplot(projection='3d')
+  X, Y = np.meshgrid(np.arange(0,9), np.arange(0,9))
+  ax3.plot_surface(X,Y,c,linewidth=0,cmap=plt.cm.jet, antialiased=False,rstride=1, cstride=1)
+  plt.title("Correlation coefficient map")  
+  plt.show()
   
   
 def show_lidar():

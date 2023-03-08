@@ -13,10 +13,12 @@ def alignDataWithTime(data):
   data_aligned['imu']['linear_acceleration'] = data['imu']['imu_linear_acceleration'][0]
   data_aligned['imu']['angular_velocity'] = data['imu']['imu_angular_velocity'][0]
   data_aligned['encoder']['counts'] = data['encoder']['encoder_counts'][0]
+  data_aligned["camera"]['idx'] = np.array([1])
 
   data_aligned['imu']['linear_acceleration'] = np.expand_dims(data_aligned['imu']['linear_acceleration'], axis=0)
   data_aligned['imu']['angular_velocity'] = np.expand_dims(data_aligned['imu']['angular_velocity'], axis=0)
   data_aligned['encoder']['counts'] = np.expand_dims(data_aligned['encoder']['counts'], axis=0)
+  
   
   ref_time = data['imu']['imu_stamps']
   ref_time_l = data['lidar']['lidar_stamps']
@@ -37,6 +39,14 @@ def alignDataWithTime(data):
     else:
       data_aligned["encoder"]['counts'] = np.concatenate((data_aligned["encoder"]['counts'],
                                                           np.expand_dims(data['encoder']['encoder_counts'][-1], axis=0)))
+    
+  for i in range(len(data['camera']['rgb_stamps'])):
+    cam_time = data['camera']['rgb_stamps'][i]
+    idx = t_align(cam_time, ref_time_l)
+    if idx >= len(data['camera']['rgb_stamps']) - 1:
+      idx = len(data['camera']['rgb_stamps']) - 1
+    # print(data_aligned["camera"]['idx'].shape)
+    data_aligned["camera"]['idx'] = np.concatenate((data_aligned["camera"]['idx'], np.array([idx])))
   
   data_aligned['imu']['linear_acceleration'] = data_aligned['imu']['linear_acceleration'][1:,]
   data_aligned['imu']['angular_velocity'] = data_aligned['imu']['angular_velocity'][1:,]
@@ -44,11 +54,12 @@ def alignDataWithTime(data):
 
   return data_aligned
 
-def getData(data_path, encoder_file_name, lidar_file_name, imu_file_name):
+def getData(data_path, encoder_file_name, lidar_file_name, imu_file_name, camera_file_name):
   data = dict()
   data["encoder"] = getEncoderData(os.path.join(data_path, encoder_file_name))
   data["lidar"] = getLidarData(os.path.join(data_path, lidar_file_name))
   data["imu"] = getImuData(os.path.join(data_path, imu_file_name))
+  data["camera"] = getKinectData(os.path.join(data_path, camera_file_name))
   return data
 
 def getEncoderData(file_path):

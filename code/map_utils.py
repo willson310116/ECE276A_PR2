@@ -14,6 +14,7 @@ class OccupancyMap:
         self.xsize = int(np.ceil((self.xmax - self.xmin) / self.res))
         self.ysize = int(np.ceil((self.ymax - self.ymin) / self.res))
         self.grid = np.zeros((self.xsize, self.ysize))
+        self.texture = np.zeros((self.xsize, self.ysize, 3))
     
     def mapping(self, data, id, pose):
         # free_odd = np.log(9)/4
@@ -56,3 +57,21 @@ class OccupancyMap:
         plt.title("Occupancy grid (log-odds)")
         plt.savefig(file_name)
         plt.show()
+
+    def update_texture(self, opti_w, rgb):
+
+        xi, yi = (opti_w[:, 0]/self.res).astype(int), (opti_w[:, 1]/self.res).astype(int)
+        for i, (a, b) in enumerate(zip(xi, yi)):
+
+            x = a + self.grid.shape[0] // 2  # offset to center
+            y = b + self.grid.shape[1] // 2  # offset to center
+            self.texture[x, y, :] = rgb[i]
+    
+    def plot_texture(self):
+        print("Plot...")
+        fig = plt.figure(figsize=(12,6))
+
+        plt.imshow(self.texture)
+        plt.show()
+        
+        

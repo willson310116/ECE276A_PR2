@@ -74,6 +74,30 @@ class Transform:
         P = np.array([[self.x, self.y, 0.127]]).T
         return np.vstack([np.hstack([R, P]), np.array([0, 0, 0, 1])])
     
+    
+    @property
+    def opticalToCamera(self):
+        return np.array([[0, 0, 1, 0],
+                         [-1, 1, 0, 0],
+                         [0, -1, 0, 0],
+                         [0, 0, 0, 1]])
+
+
+    @property
+    def cameraToBody(self):
+        R_y = yaw(0.021)
+        R_p = pitch(0.36)
+        R = R_y + R_p
+        P = np.array([[0.18, 0.005, 0.36]]).T
+        return np.vstack([np.hstack([R, P]), np.array([0, 0, 0, 1])])
+
+    @property
+    def cTo(self):
+        return self.opticalToCamera
+    
+    @property
+    def bTc(self):
+        return self.cameraToBody
 
     @property
     def bTl(self):
