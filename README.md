@@ -19,5 +19,6 @@ This is the project 2 of the course UCSD ECE276A: Sensing & Estimation in Roboti
 - **code/motion_utils.py**: Functions motion model and odometry.
 - **code/particle.py**: Class and function for particles.
 - **code/transformation.py**: Functions for data transformation and others.
+- **code/pr2_utils.py**: Functions for bresenham2D, mapCorrelation and others.
 
     
